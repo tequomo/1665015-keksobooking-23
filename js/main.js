@@ -54,7 +54,7 @@ const ROOM_COUNT_MAX = 6;
 const GUESTS_MIN = 0;
 const GUESTS_MAX = 5;
 
-const offerTitles = [
+const OFFER_TITLES = [
   'Дешевле не найдете!',
   'Красивый вид из окна',
   'Лучшее место на земле!',
@@ -67,7 +67,7 @@ const offerTitles = [
   'Скромное жилище',
 ];
 
-const livingTypes = [
+const LIVING_TYPES = [
   'palace',
   'flat',
   'house',
@@ -75,13 +75,13 @@ const livingTypes = [
   'hotel',
 ];
 
-const checkTimes = [
+const CHECK_TIMES = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const allOfferFeatures = [
+const ALL_OFFER_FEATURES = [
   'wifi',
   'dishwasher',
   'parking',
@@ -90,7 +90,7 @@ const allOfferFeatures = [
   'conditioner',
 ];
 
-const offerDescriptions = [
+const OFFER_DESCRIPTIONS = [
   'Ежедневная уборка',
   'Уютное место',
   'Принесете печеньки - сутки бесплатно!',
@@ -103,47 +103,45 @@ const offerDescriptions = [
   'Все включено, кроме того, что выключено',
 ];
 
-const allOfferPhotos = [
+const ALL_OFFER_PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-function getRandomLengthArray(sourceArray) {
-  const indexArray = [];
-  const indexArrayLength = getRandomInteger(1, sourceArray.length);
-  for (let i = 0; i < indexArrayLength; i++) {
-    let randomIndex;
-    do {
-      randomIndex = getRandomInteger(1, sourceArray.length);
-    }
-    while (indexArray.includes(randomIndex));
-    indexArray.push(randomIndex);
+function shuffleArray(array) {
+  for (let currentIndex = array.length - 1; currentIndex > 0; currentIndex--) {
+    const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
-  return indexArray.map((value) => sourceArray[value-1]);
 }
 
-const generateOffers = (ind) => {
+function getRandomLengthArray(sourceArray) {
+  shuffleArray(sourceArray);
+  return sourceArray.slice(0, getRandomInteger(1, sourceArray.length));
+}
+
+const generateOffers = (currentIndex) => {
 
   const offerLattitude = getRandomFloat(LATITUDE_MIN, LATITUDE_MAX, PRECISE_COORDS);
   const offerLongitude = getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, PRECISE_COORDS);
 
   return {
     author: {
-      avatar: (ind < AVATAR_COUNT_MAX-1) ? `img/avatars/user0${(ind + 1)}.png` : `img/avatars/user${(ind + 1)}.png`,
+      avatar: (currentIndex < AVATAR_COUNT_MAX - 1) ? `img/avatars/user0${(currentIndex + 1)}.png` : `img/avatars/user${(currentIndex + 1)}.png`,
     },
     offer: {
-      title: offerTitles[getRandomInteger(0, offerTitles.length-1)],
-      address: `${offerLattitude  }, ${  offerLongitude}`,
+      title: OFFER_TITLES[getRandomInteger(0, OFFER_TITLES.length - 1)],
+      address: `${offerLattitude}, ${offerLongitude}`,
       price: getRandomInteger(OFFER_PRICE_MIN, OFFER_PRICE_MAX),
-      type: livingTypes[getRandomInteger(0, livingTypes.length-1)],
+      type: LIVING_TYPES[getRandomInteger(0, LIVING_TYPES.length - 1)],
       rooms: getRandomInteger(ROOM_COUNT_MIN, ROOM_COUNT_MAX),
       guests: getRandomInteger(GUESTS_MIN, GUESTS_MAX),
-      checkin: checkTimes[getRandomInteger(0, checkTimes.length-1)],
-      checkout: checkTimes[getRandomInteger(0, checkTimes.length-1)],
-      features: getRandomLengthArray(allOfferFeatures),
-      description: offerDescriptions[getRandomInteger(0, offerDescriptions.length-1)],
-      photos: getRandomLengthArray(allOfferPhotos),
+      checkin: CHECK_TIMES[getRandomInteger(0, CHECK_TIMES.length - 1)],
+      checkout: CHECK_TIMES[getRandomInteger(0, CHECK_TIMES.length - 1)],
+      features: getRandomLengthArray(ALL_OFFER_FEATURES),
+      description: OFFER_DESCRIPTIONS[getRandomInteger(0, OFFER_DESCRIPTIONS.length - 1)],
+      photos: getRandomLengthArray(ALL_OFFER_PHOTOS),
     },
     location: {
       lat: offerLattitude,
@@ -152,6 +150,6 @@ const generateOffers = (ind) => {
   };
 };
 
-const offers = new Array(OFFERS_COUNT).fill(null).map((offer, index) => generateOffers(index));
+const offers = new Array(OFFERS_COUNT).fill(null).map((_, index) => generateOffers(index));
 
 offers;
