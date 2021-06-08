@@ -1,10 +1,10 @@
-function getRandomIntInclusive(min, max) { // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+const getRandomIntInclusive = (min, max) => { // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
-function getRandomInteger(minValue, maxValue) {
+const getRandomInteger = (minValue, maxValue) => {
 
   minValue = (minValue < 0) ? Math.abs(minValue) : minValue;
   maxValue = (maxValue < 0) ? Math.abs(maxValue) : maxValue;
@@ -20,9 +20,9 @@ function getRandomInteger(minValue, maxValue) {
   }
 
   return getRandomIntInclusive(minValue, maxValue);
-}
+};
 
-function getRandomFloat(minValue, maxValue, decimal) {
+const getRandomFloat = (minValue, maxValue, decimal) => {
 
   minValue = (minValue < 0) ? Math.abs(minValue) : minValue;
   maxValue = (maxValue < 0) ? Math.abs(maxValue) : maxValue;
@@ -38,7 +38,7 @@ function getRandomFloat(minValue, maxValue, decimal) {
   }
 
   return Number((Math.random() * (maxValue - minValue) + minValue).toFixed(decimal));
-}
+};
 
 const AVATAR_COUNT_MAX = 10;
 const OFFERS_COUNT = 10;
@@ -109,17 +109,17 @@ const ALL_OFFER_PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-function shuffleArray(array) {
+const shuffleArray = (array) => {
   for (let currentIndex = array.length - 1; currentIndex > 0; currentIndex--) {
     const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
     [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
-}
+};
 
-function getRandomLengthArray(sourceArray) {
+const getRandomLengthArray = (sourceArray) => {
   shuffleArray(sourceArray);
   return sourceArray.slice(0, getRandomInteger(1, sourceArray.length));
-}
+};
 
 const generateOffers = (currentIndex) => {
 
