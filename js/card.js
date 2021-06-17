@@ -1,11 +1,11 @@
 import { getOffersArray, OFFERS_COUNT } from './data.js';
 
 const APARTMENTS = {
-  'flat' : 'Квартира',
-  'bungalow' : 'Бунгало',
-  'house' : 'Дом',
-  'palace' : 'Дворец',
-  'hotel' : 'Отель',
+  'flat': 'Квартира',
+  'bungalow': 'Бунгало',
+  'house': 'Дом',
+  'palace': 'Дворец',
+  'hotel': 'Отель',
 };
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
@@ -43,23 +43,21 @@ const createFeaturesList = function (features) {
   const featuresList = document.createDocumentFragment();
   const featureItemTemplate = document.createElement('li');
   featureItemTemplate.classList.add('popup__feature');
-
-  for (let i = 0; i < features.length; i++) {
+  features.forEach((feature) => {
     const featureItem = featureItemTemplate.cloneNode(true);
-
-    featureItem.classList.add(`popup__feature--${  features[i]}`);
+    featureItem.classList.add(`popup__feature--${feature}`);
     featuresList.appendChild(featureItem);
-  }
+  });
   return featuresList;
 };
 
 const createPhotoCollection = function (containerNode, linkCollection) {
   const photoCollection = document.createDocumentFragment();
-  for (let i = 0; i < linkCollection.length; i++) {
+  linkCollection.forEach((link) => {
     const collectionItem = containerNode.cloneNode(true);
-    collectionItem.src = linkCollection[i];
+    collectionItem.src = link;
     photoCollection.appendChild(collectionItem);
-  }
+  });
   return photoCollection;
 };
 
@@ -70,7 +68,7 @@ const generateCard = function (advert) {
   newCard.querySelector('.popup__text--price').innerHTML = `${advert.offer.price}<span> ₽/ночь</span>`;
   newCard.querySelector('.popup__type').textContent = APARTMENTS[advert.offer.type];
   newCard.querySelector('.popup__text--capacity').textContent = generateCapacityText(advert.offer.rooms, advert.offer.guests);
-  newCard.querySelector('.popup__text--time').textContent = `Заезд после ${  advert.offer.checkin  }, выезд до ${  advert.offer.checkout}`;
+  newCard.querySelector('.popup__text--time').textContent = `Заезд после ${advert.offer.checkin}, выезд до ${advert.offer.checkout}`;
   newCard.querySelector('.popup__features').innerHTML = '';
   newCard.querySelector('.popup__features').appendChild(createFeaturesList(advert.offer.features));
   (advert.offer.description) ? newCard.querySelector('.popup__description').textContent = advert.offer.description : newCard.querySelector('.popup__description').classList.add('hidden');
