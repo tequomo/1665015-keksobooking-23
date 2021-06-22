@@ -1,31 +1,111 @@
-const deactivateForms = function () {
+import { APARTMENTS } from './card.js';
+
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+
+const MIN_PRICE = {
+  'Бунгало': 0,
+  'Квартира': 1000,
+  'Отель': 3000,
+  'Дом': 5000,
+  'Дворец': 10000,
+};
+
+const ROOMS_FOR_GUESTS = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
+
+const offerForm = document.querySelector('.ad-form');
+const livingType = offerForm.querySelector('#type');
+const livingPrice = offerForm.querySelector('#price');
+const adTitle = offerForm.querySelector('#title');
+const roomNumber = offerForm.querySelector('#room_number');
+const guestsCapacity = offerForm.querySelector('#capacity');
+const checkInTime = offerForm.querySelector('#timein');
+const checkOutTime = offerForm.querySelector('#timeout');
+
+const deactivateAdForm = () => {
   const adForm = document.querySelector('.ad-form');
   const adFormFieldsets = adForm.querySelectorAll('fieldset');
   adForm.classList.add('ad-form--disabled');
   adFormFieldsets.forEach((fieldsetNode) => fieldsetNode.disabled = true);
-
-  const mapFilterForm = document.querySelector('.map__filters');
-  const mapFilterFormFieldsets = mapFilterForm.querySelectorAll('fieldset');
-  const mapFilterFormInputs = mapFilterForm.querySelectorAll('select');
-  mapFilterForm.classList.add('map__filters--disabled');
-  mapFilterFormFieldsets.forEach((fieldsetNode) => fieldsetNode.disabled = true);
-  mapFilterFormInputs.forEach((inputNode) => inputNode.disabled = true);
 };
 
-deactivateForms();
-
-const activateForms = function () {
+const activateAdForm = () => {
   const adForm = document.querySelector('.ad-form');
   const adFormFieldsets = adForm.querySelectorAll('fieldset');
   adForm.classList.remove('ad-form--disabled');
   adFormFieldsets.forEach((fieldsetNode) => fieldsetNode.disabled = false);
-
-  const mapFilterForm = document.querySelector('.map__filters');
-  const mapFilterFormFieldsets = mapFilterForm.querySelectorAll('fieldset');
-  const mapFilterFormInputs = mapFilterForm.querySelectorAll('select');
-  mapFilterForm.classList.remove('map__filters--disabled');
-  mapFilterFormFieldsets.forEach((fieldsetNode) => fieldsetNode.disabled = false);
-  mapFilterFormInputs.forEach((inputNode) => inputNode.disabled = false);
 };
 
-activateForms();
+const verifyTitleHandler = () => {
+  const adForm = document.querySelector('.ad-form');
+  const formTitle = adForm.querySelector('#title');
+  let alertString = '';
+  if (formTitle.value.length < MIN_TITLE_LENGTH) {
+    alertString = `Заголовок объявления должен содержать не менее ${MIN_TITLE_LENGTH} символов. Еще осталось ${MIN_TITLE_LENGTH - formTitle.value.length}.`;
+  }
+  else if (MIN_TITLE_LENGTH <= formTitle.value.length <= MAX_TITLE_LENGTH) {
+    alertString = '';
+  }
+  formTitle.setCustomValidity(alertString);
+  formTitle.reportValidity();
+};
+
+
+adTitle.addEventListener('input', verifyTitleHandler);
+
+livingType.addEventListener('change', () => {
+  livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
+  livingPrice.min = MIN_PRICE[APARTMENTS[livingType.value]];
+});
+
+const getValuesFromSelect = (parentNode, id) => {
+  const selectValuesCollection = parentNode.querySelector(`#${id}`).options;
+  const valuesArray = [];
+  for (let i = 0; i < selectValuesCollection.length; i++) {
+    valuesArray.push(selectValuesCollection[i].value);
+  }
+  return valuesArray;
+};
+
+const guests = getValuesFromSelect(offerForm, 'capacity').map((value) => Number(value));
+
+const setGuestCapacity = (rooms) => {
+  const guestsAvailableIndex = [];
+  ROOMS_FOR_GUESTS[rooms].forEach((value) => {
+    guestsAvailableIndex.push(guests[value]);
+  });
+
+  const guestsInitialIndex = guests.map((index) => guests.indexOf(index));
+  const guestsDisabledIndex = guestsInitialIndex.filter((value) => !guestsAvailableIndex.includes(value));
+
+  guestsDisabledIndex.forEach((value) => {
+    guestsCapacity.options[value].disabled = true;
+  });
+  guestsAvailableIndex.forEach((value) => {
+    guestsCapacity.options[value].disabled = false;
+  });
+  guestsCapacity.options[Math.min(...guestsAvailableIndex)].selected = true;
+};
+
+checkInTime.addEventListener('change', () => {
+  checkOutTime.value = checkInTime.value;
+});
+
+checkOutTime.addEventListener('change', () => {
+  checkInTime.value = checkOutTime.value;
+});
+
+roomNumber.addEventListener('change', () => setGuestCapacity(roomNumber.value));
+
+document.addEventListener('DOMContentLoaded', () => {
+  livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
+  livingPrice.min = MIN_PRICE[APARTMENTS[livingType.value]];
+  setGuestCapacity(roomNumber.value);
+}, { once: true });
+
+export { deactivateAdForm, activateAdForm };

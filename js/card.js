@@ -11,7 +11,7 @@ const APARTMENTS = {
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const mapCanvas = document.querySelector('#map-canvas');
 
-const generateCapacityText = function (rooms, guests) {
+const generateCapacityText = (rooms, guests) => {
   let capacityString = '';
   switch (rooms) {
     case 1:
@@ -39,7 +39,7 @@ const generateCapacityText = function (rooms, guests) {
   return capacityString;
 };
 
-const createFeaturesList = function (features) {
+const createFeaturesList = (features) => {
   const featuresList = document.createDocumentFragment();
   const featureItemTemplate = document.createElement('li');
   featureItemTemplate.classList.add('popup__feature');
@@ -51,7 +51,7 @@ const createFeaturesList = function (features) {
   return featuresList;
 };
 
-const createPhotoCollection = function (containerNode, linkCollection) {
+const createPhotoCollection = (containerNode, linkCollection) => {
   const photoCollection = document.createDocumentFragment();
   linkCollection.forEach((link) => {
     const collectionItem = containerNode.cloneNode(true);
@@ -61,7 +61,7 @@ const createPhotoCollection = function (containerNode, linkCollection) {
   return photoCollection;
 };
 
-const generateCard = function (advert) {
+const generateCard = (advert) => {
   const newCard = cardTemplate.cloneNode(true);
   newCard.querySelector('.popup__title').textContent = advert.offer.title;
   newCard.querySelector('.popup__text--address').textContent = advert.offer.address;
@@ -83,6 +83,5 @@ const generateCard = function (advert) {
 const offers = getOffersArray(OFFERS_COUNT);
 
 // offers.forEach(generateCard);
-generateCard(offers[4]);
 
-export { generateCard };
+export { generateCard, offers, APARTMENTS };
