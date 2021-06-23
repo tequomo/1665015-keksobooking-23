@@ -26,24 +26,20 @@ const roomNumber = offerForm.querySelector('#room_number');
 const guestsCapacity = offerForm.querySelector('#capacity');
 const checkInTime = offerForm.querySelector('#timein');
 const checkOutTime = offerForm.querySelector('#timeout');
+const adFormFieldsets = offerForm.querySelectorAll('fieldset');
 
-const deactivateAdForm = () => {
-  const adForm = document.querySelector('.ad-form');
-  const adFormFieldsets = adForm.querySelectorAll('fieldset');
-  adForm.classList.add('ad-form--disabled');
-  adFormFieldsets.forEach((fieldsetNode) => fieldsetNode.disabled = true);
+const deactivateAdForm = (form, nodes) => {
+  form.classList.add('ad-form--disabled');
+  nodes.forEach((node) => node.disabled = true);
 };
 
-const activateAdForm = () => {
-  const adForm = document.querySelector('.ad-form');
-  const adFormFieldsets = adForm.querySelectorAll('fieldset');
-  adForm.classList.remove('ad-form--disabled');
-  adFormFieldsets.forEach((fieldsetNode) => fieldsetNode.disabled = false);
+const activateAdForm = (form, nodes) => {
+  form.classList.remove('ad-form--disabled');
+  nodes.forEach((node) => node.disabled = false);
 };
 
 const verifyTitleHandler = () => {
-  const adForm = document.querySelector('.ad-form');
-  const formTitle = adForm.querySelector('#title');
+  const formTitle = event.currentTarget;
   let alertString = '';
   if (formTitle.value.length < MIN_TITLE_LENGTH) {
     alertString = `Заголовок объявления должен содержать не менее ${MIN_TITLE_LENGTH} символов. Еще осталось ${MIN_TITLE_LENGTH - formTitle.value.length}.`;
@@ -55,13 +51,10 @@ const verifyTitleHandler = () => {
   formTitle.reportValidity();
 };
 
-
-adTitle.addEventListener('input', verifyTitleHandler);
-
-livingType.addEventListener('change', () => {
+const setCostValues = () => {
   livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
   livingPrice.min = MIN_PRICE[APARTMENTS[livingType.value]];
-});
+};
 
 const getValuesFromSelect = (parentNode, id) => {
   const selectValuesCollection = parentNode.querySelector(`#${id}`).options;
@@ -92,13 +85,16 @@ const setGuestCapacity = (rooms) => {
   guestsCapacity.options[Math.min(...guestsAvailableIndex)].selected = true;
 };
 
-checkInTime.addEventListener('change', () => {
-  checkOutTime.value = checkInTime.value;
-});
+const synchronizeCheckTime = (synchronizedNode) => {
+  synchronizedNode.value = event.currentTarget.value;
+};
 
-checkOutTime.addEventListener('change', () => {
-  checkInTime.value = checkOutTime.value;
-});
+adTitle.addEventListener('input', verifyTitleHandler);
+
+livingType.addEventListener('change', setCostValues);
+
+checkInTime.addEventListener('change', () => synchronizeCheckTime(checkOutTime));
+checkOutTime.addEventListener('change', () => synchronizeCheckTime(checkInTime));
 
 roomNumber.addEventListener('change', () => setGuestCapacity(roomNumber.value));
 
@@ -108,4 +104,4 @@ document.addEventListener('DOMContentLoaded', () => {
   setGuestCapacity(roomNumber.value);
 }, { once: true });
 
-export { deactivateAdForm, activateAdForm };
+export { deactivateAdForm, activateAdForm, offerForm, adFormFieldsets };
