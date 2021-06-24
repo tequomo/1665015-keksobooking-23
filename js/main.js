@@ -1,12 +1,13 @@
 import './util.js';
 import './data.js';
-import { generateCard, offers } from './card.js';
+import /*{ generateCard, offers } from */'./card.js';
 import './form.js';
 import './filter.js';
 import { activateAdForm, deactivateAdForm, offerForm, adFormFieldsets } from './form.js';
 import { activateFilters, deactivateFilters, filterForm, filterFormFieldsets, filterFormInputs } from './filter.js';
+import './map.js';
 
-generateCard(offers[4]);
+// generateCard(offers[4]);
 
 const disableInteractivity = () => {
   deactivateAdForm(offerForm, adFormFieldsets);
@@ -19,4 +20,6 @@ const enableInteractivity = () => {
 };
 
 disableInteractivity();
-enableInteractivity();
+// enableInteractivity();
+
+export {enableInteractivity};
