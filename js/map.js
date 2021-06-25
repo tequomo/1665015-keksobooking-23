@@ -1,8 +1,8 @@
-import /*{ enableInteractivity } from */'./main.js';
+import { enableInteractivity } from './state.js';
 
-const map = L.map('map-canvas')
+const bookingMap = L.map('map-canvas')
   .on('load', () => {
-    // enableInteractivity();
+    enableInteractivity();
   })
   .setView({
     lat: 35.6895000,
@@ -14,4 +14,4 @@ L.tileLayer(
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
-).addTo(map);
+).addTo(bookingMap);
