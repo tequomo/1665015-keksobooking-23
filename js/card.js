@@ -9,7 +9,7 @@ const APARTMENTS = {
 };
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvas = document.querySelector('#map-canvas');
+// const mapCanvas = document.querySelector('#map-canvas');
 
 const generateCapacityText = (rooms, guests) => {
   let capacityString = '';
@@ -76,8 +76,8 @@ const generateCard = (advert) => {
   const offerPhotos = createPhotoCollection(offerPhotoNode.children[0], advert.offer.photos);
   (advert.offer.photos.length !== 0) ? (offerPhotoNode.innerHTML = '', offerPhotoNode.appendChild(offerPhotos)) : offerPhotoNode.classList.add('hidden');
   newCard.querySelector('.popup__avatar').src = advert.author.avatar;
-
-  mapCanvas.appendChild(newCard);
+  return newCard;
+  // mapCanvas.appendChild(newCard);
 };
 
 const offers = getOffersArray(OFFERS_COUNT);
