@@ -67,7 +67,8 @@ const getValuesFromSelect = (parentNode, id) => {
 
 const guests = getValuesFromSelect(offerForm, 'capacity').map((value) => Number(value));
 
-const setGuestCapacity = (rooms = event.currentTarget.value) => {
+const setGuestCapacity = (selectedRooms) => {
+  const rooms = (selectedRooms) ? selectedRooms : event.currentTarget.value;
   const guestsAvailableIndex = [];
   ROOMS_FOR_GUESTS[rooms].forEach((value) => {
     guestsAvailableIndex.push(guests[value]);
