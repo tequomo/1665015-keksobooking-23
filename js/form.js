@@ -89,18 +89,18 @@ const synchronizeCheckTime = (synchronizedNode) => {
   synchronizedNode.value = event.currentTarget.value;
 };
 
-const onVerifyTitle = () => verifyTitle();
-const onSyncCheckInTime = () => synchronizeCheckTime(checkOutTime);
-const onSyncCheckOutTime = () => synchronizeCheckTime(checkInTime);
-const onSetCostValues = () => setCostValues();
-const onSetGuestCapacity = () => setGuestCapacity();
+const onInputTitle = () => verifyTitle();
+const onSelectInTime = () => synchronizeCheckTime(checkOutTime);
+const onSelectOutTime = () => synchronizeCheckTime(checkInTime);
+const onSelectHousing = () => setCostValues();
+const onSelectRoomsNumber = () => setGuestCapacity();
 
 
-adTitle.addEventListener('input', onVerifyTitle);
-checkInTime.addEventListener('change', onSyncCheckInTime);
-checkOutTime.addEventListener('change', onSyncCheckOutTime);
-livingType.addEventListener('change', onSetCostValues);
-roomNumber.addEventListener('change', onSetGuestCapacity);
+adTitle.addEventListener('input', onInputTitle);
+checkInTime.addEventListener('change', onSelectInTime);
+checkOutTime.addEventListener('change', onSelectOutTime);
+livingType.addEventListener('change', onSelectHousing);
+roomNumber.addEventListener('change', onSelectRoomsNumber);
 
 document.addEventListener('DOMContentLoaded', () => {
   livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
