@@ -21,12 +21,21 @@ const bookingMap = L.map('map-canvas')
     lng: TOKIO_CENTER_COORDS.lng,
   }, 12);
 
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+// L.tileLayer(
+//   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+//   {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+//   },
+// ).addTo(bookingMap);
+
+L.tileLayer.mapTilesAPI(
+  'https://maptiles.p.rapidapi.com/en/map/v1/{z}/{x}/{y}.png',
   {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
   },
 ).addTo(bookingMap);
+L.control.scale().addTo(bookingMap);
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -52,6 +61,8 @@ mainPin.on('moveend', (evt) => {
   offerAddress.value = parseAddress(evt.target.getLatLng());
 });
 
+const markersCluster = L.markerClusterGroup().addTo(bookingMap);
+
 const createOfferPin = (offer) => {
 
   const offerPinIcon = L.icon({
@@ -71,13 +82,16 @@ const createOfferPin = (offer) => {
     {
       icon: offerPinIcon,
     },
-  ).addTo(bookingMap);
+  // ).addTo(bookingMap);
+  );
 
   offerPin.bindPopup(generateCard(offer),
     {
       keepInView: true,
     },
   );
+
+  markersCluster.addLayer(offerPin);
 };
 
 offers.forEach((element) => {
