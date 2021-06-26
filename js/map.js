@@ -19,7 +19,7 @@ const bookingMap = L.map('map-canvas')
   .setView({
     lat: TOKIO_CENTER_COORDS.lat,
     lng: TOKIO_CENTER_COORDS.lng,
-  }, 10);
+  }, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -32,6 +32,9 @@ const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
+  shadowUrl: '../leaflet/images/marker-shadow.png',
+  shadowSize: [52, 52],
+  shadowAnchor: [15, 52],
 });
 
 const mainPin = L.marker(
@@ -55,6 +58,9 @@ const createOfferPin = (offer) => {
     iconUrl: '../img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
+    shadowUrl: '../leaflet/images/marker-shadow.png',
+    shadowSize: [41, 41],
+    shadowAnchor: [11, 40],
   });
 
   const offerPin = L.marker(
