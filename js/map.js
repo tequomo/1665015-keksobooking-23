@@ -38,10 +38,10 @@ L.tileLayer.mapTilesAPI(
 L.control.scale().addTo(bookingMap);
 
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
-  shadowUrl: '../leaflet/images/marker-shadow.png',
+  shadowUrl: 'leaflet/images/marker-shadow.png',
   shadowSize: [52, 52],
   shadowAnchor: [15, 52],
 });
@@ -66,10 +66,10 @@ const markersCluster = L.markerClusterGroup().addTo(bookingMap);
 const createOfferPin = (offer) => {
 
   const offerPinIcon = L.icon({
-    iconUrl: '../img/pin.svg',
+    iconUrl: 'img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    shadowUrl: '../leaflet/images/marker-shadow.png',
+    shadowUrl: 'leaflet/images/marker-shadow.png',
     shadowSize: [41, 41],
     shadowAnchor: [11, 40],
   });
