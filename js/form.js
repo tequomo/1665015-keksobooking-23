@@ -38,7 +38,7 @@ const activateAdForm = (form, nodes) => {
   nodes.forEach((node) => node.disabled = false);
 };
 
-const verifyTitleHandler = () => {
+const verifyTitle = () => {
   const formTitle = event.currentTarget;
   let alertString = '';
   if (formTitle.value.length < MIN_TITLE_LENGTH) {
@@ -67,7 +67,8 @@ const getValuesFromSelect = (parentNode, id) => {
 
 const guests = getValuesFromSelect(offerForm, 'capacity').map((value) => Number(value));
 
-const setGuestCapacity = (rooms) => {
+const setGuestCapacity = (selectedRooms) => {
+  const rooms = (selectedRooms) ? selectedRooms : event.currentTarget.value;
   const guestsAvailableIndex = [];
   ROOMS_FOR_GUESTS[rooms].forEach((value) => {
     guestsAvailableIndex.push(guests[value]);
@@ -89,14 +90,18 @@ const synchronizeCheckTime = (synchronizedNode) => {
   synchronizedNode.value = event.currentTarget.value;
 };
 
-adTitle.addEventListener('input', verifyTitleHandler);
+const onInputTitle = () => verifyTitle();
+const onSelectInTime = () => synchronizeCheckTime(checkOutTime);
+const onSelectOutTime = () => synchronizeCheckTime(checkInTime);
+const onSelectHousing = () => setCostValues();
+const onSelectRoomsNumber = () => setGuestCapacity();
 
-livingType.addEventListener('change', setCostValues);
 
-checkInTime.addEventListener('change', () => synchronizeCheckTime(checkOutTime));
-checkOutTime.addEventListener('change', () => synchronizeCheckTime(checkInTime));
-
-roomNumber.addEventListener('change', () => setGuestCapacity(roomNumber.value));
+adTitle.addEventListener('input', onInputTitle);
+checkInTime.addEventListener('change', onSelectInTime);
+checkOutTime.addEventListener('change', onSelectOutTime);
+livingType.addEventListener('change', onSelectHousing);
+roomNumber.addEventListener('change', onSelectRoomsNumber);
 
 document.addEventListener('DOMContentLoaded', () => {
   livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
