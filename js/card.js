@@ -69,12 +69,14 @@ const generateCard = (advert) => {
   newCard.querySelector('.popup__type').textContent = APARTMENTS[advert.offer.type];
   newCard.querySelector('.popup__text--capacity').textContent = generateCapacityText(advert.offer.rooms, advert.offer.guests);
   newCard.querySelector('.popup__text--time').textContent = `Заезд после ${advert.offer.checkin}, выезд до ${advert.offer.checkout}`;
-  newCard.querySelector('.popup__features').innerHTML = '';
-  newCard.querySelector('.popup__features').appendChild(createFeaturesList(advert.offer.features));
+  (advert.offer.features) ? (newCard.querySelector('.popup__features').innerHTML = '', newCard.querySelector('.popup__features').appendChild(createFeaturesList(advert.offer.features))) : newCard.querySelector('.popup__features').classList.add('hidden');
   (advert.offer.description) ? newCard.querySelector('.popup__description').textContent = advert.offer.description : newCard.querySelector('.popup__description').classList.add('hidden');
+  // const offerPhotoNode = newCard.querySelector('.popup__photos');
+  // const offerPhotos = createPhotoCollection(offerPhotoNode.children[0], advert.offer.photos);
+  // (advert.offer.photos.length !== 0) ? (offerPhotoNode.innerHTML = '', offerPhotoNode.appendChild(offerPhotos)) : offerPhotoNode.classList.add('hidden');
   const offerPhotoNode = newCard.querySelector('.popup__photos');
-  const offerPhotos = createPhotoCollection(offerPhotoNode.children[0], advert.offer.photos);
-  (advert.offer.photos.length !== 0) ? (offerPhotoNode.innerHTML = '', offerPhotoNode.appendChild(offerPhotos)) : offerPhotoNode.classList.add('hidden');
+  let offerPhotos = {};
+  (advert.offer.photos) ? (offerPhotos = createPhotoCollection(offerPhotoNode.children[0], advert.offer.photos), offerPhotoNode.innerHTML = '', offerPhotoNode.appendChild(offerPhotos)) : offerPhotoNode.classList.add('hidden');
   newCard.querySelector('.popup__avatar').src = advert.author.avatar;
   return newCard;
   // mapCanvas.appendChild(newCard);

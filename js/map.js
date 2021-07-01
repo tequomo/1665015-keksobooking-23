@@ -1,6 +1,6 @@
 import { enableInteractivity } from './state.js';
 import { offerForm } from './form.js';
-import { offers, generateCard } from './card.js';
+import { /*offers,*/ generateCard } from './card.js';
 
 const TOKIO_CENTER_COORDS = {
   lat: 35.6895000,
@@ -8,6 +8,7 @@ const TOKIO_CENTER_COORDS = {
 };
 
 const offerAddress = offerForm.querySelector('#address');
+// const offerAddress = document.querySelector('#address');
 
 const parseAddress = (coords) => `${(coords.lat).toFixed(5)}, ${(coords.lng).toFixed(5)}`;
 
@@ -82,7 +83,7 @@ const createOfferPin = (offer) => {
     {
       icon: offerPinIcon,
     },
-  // ).addTo(bookingMap);
+    // ).addTo(bookingMap);
   );
 
   offerPin.bindPopup(generateCard(offer),
@@ -94,6 +95,23 @@ const createOfferPin = (offer) => {
   markersCluster.addLayer(offerPin);
 };
 
-offers.forEach((element) => {
-  createOfferPin(element);
-});
+const resetMap = () => {
+  mainPin.setLatLng(
+    {
+      lat: TOKIO_CENTER_COORDS.lat,
+      lng: TOKIO_CENTER_COORDS.lng,
+    },
+  );
+  bookingMap.setView(
+    {
+      lat: TOKIO_CENTER_COORDS.lat,
+      lng: TOKIO_CENTER_COORDS.lng,
+    }, 12);
+  offerAddress.value = parseAddress(TOKIO_CENTER_COORDS);
+};
+
+// offers.forEach((element) => {
+//   createOfferPin(element);
+// });
+
+export { createOfferPin, resetMap };

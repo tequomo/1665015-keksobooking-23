@@ -1,9 +1,9 @@
 import './util.js';
 import './data.js';
-import /*{ generateCard, offers } from */'./card.js';
-import './form.js';
-import './filter.js';
-import './state.js';
+import './card.js';
 import './map.js';
-
-// generateCard(offers[4]);
+import './form.js';
+import './state.js';
+import './filter.js';
+import './api.js';
+import './message.js';
