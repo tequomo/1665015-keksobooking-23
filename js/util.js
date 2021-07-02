@@ -52,4 +52,6 @@ const getRandomLengthArray = (sourceArray) => {
   return sourceArray.slice(0, getRandomInteger(1, sourceArray.length));
 };
 
-export { getRandomInteger, getRandomFloat, getRandomLengthArray };
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+export { getRandomInteger, getRandomFloat, getRandomLengthArray, isEscEvent };

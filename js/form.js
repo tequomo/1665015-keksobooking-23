@@ -1,4 +1,9 @@
+// import { sendOfferData } from './api.js';
+import { sendOfferData } from './api.js';
 import { APARTMENTS } from './card.js';
+// import { createOfferPin } from './map.js';
+import { resetMap } from './map.js';
+// import { showErrorMessage, showSuccessMessage } from './message.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -27,6 +32,8 @@ const guestsCapacity = offerForm.querySelector('#capacity');
 const checkInTime = offerForm.querySelector('#timein');
 const checkOutTime = offerForm.querySelector('#timeout');
 const adFormFieldsets = offerForm.querySelectorAll('fieldset');
+// const adFormSubmitButton = offerForm.querySelector('.ad-form__submit');
+const adFormResetButton = offerForm.querySelector('.ad-form__reset');
 
 const deactivateAdForm = (form, nodes) => {
   form.classList.add('ad-form--disabled');
@@ -96,6 +103,17 @@ const onSelectOutTime = () => synchronizeCheckTime(checkInTime);
 const onSelectHousing = () => setCostValues();
 const onSelectRoomsNumber = () => setGuestCapacity();
 
+const setInitialFormData = () => {
+  livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
+  livingPrice.min = MIN_PRICE[APARTMENTS[livingType.value]];
+  setGuestCapacity(roomNumber.value);
+};
+
+const setInitialState = () => {
+  offerForm.reset();
+  resetMap();
+  setInitialFormData();
+};
 
 adTitle.addEventListener('input', onInputTitle);
 checkInTime.addEventListener('change', onSelectInTime);
@@ -103,10 +121,41 @@ checkOutTime.addEventListener('change', onSelectOutTime);
 livingType.addEventListener('change', onSelectHousing);
 roomNumber.addEventListener('change', onSelectRoomsNumber);
 
+offerForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const offerFormData = new FormData(event.target);
+  // fetch(
+  //   'https://23.javascript.pages.academy/keksobooking',
+  //   {
+  //     method: 'POST',
+  //     body: offerFormData,
+  //   },
+  // )
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       offerForm.reset();
+  //       resetMap();
+  //       setInitialFormData();
+  //       showSuccessMessage();
+  //     } else {
+  //       showErrorMessage();
+  //       throw new Error(`${response.status} — ${response.statusText}`);
+  //     }
+  //   })
+  //   .catch(() => showErrorMessage());
+  sendOfferData(offerFormData, setInitialState);
+});
+
+adFormResetButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  // offerForm.reset();
+  // resetMap();
+  // setInitialFormData();
+  setInitialState();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
-  livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
-  livingPrice.min = MIN_PRICE[APARTMENTS[livingType.value]];
-  setGuestCapacity(roomNumber.value);
+  setInitialFormData();
 }, { once: true });
 
-export { deactivateAdForm, activateAdForm, offerForm, adFormFieldsets };
+export { deactivateAdForm, activateAdForm, setInitialFormData, offerForm, adFormFieldsets };
