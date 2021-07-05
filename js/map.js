@@ -109,4 +109,8 @@ const resetMap = () => {
   offerAddress.value = parseAddress(TOKIO_CENTER_COORDS);
 };
 
-export { createOfferPin, resetMap };
+const removeOfferPins = () => {
+  markersCluster.remove();
+};
+
+export { createOfferPin, resetMap, removeOfferPins };
