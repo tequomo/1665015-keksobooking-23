@@ -1,8 +1,13 @@
+import { RENDERED_PINS_COUNT } from './api.js';
+import { drawPins, removeOfferPins, resetMap } from './map.js';
+
 const filterForm = document.querySelector('.map__filters');
 const filterFormFieldsets = filterForm.querySelectorAll('fieldset');
 const filterFormInputs = filterForm.querySelectorAll('select');
 // const filterFeaturesSet = filterForm.querySelector('.map__features');
+const housingType = filterForm.querySelector('#housing-type');
 const filterFeatures = filterForm.querySelectorAll('.map__checkbox');
+
 
 const DEFAULT_PARAMETER = 'any';
 const HOUSING_PRICE_RANGE = {
@@ -33,20 +38,68 @@ const activateFilters = (form, nodes, inputs) => {
   inputs.forEach((node) => node.disabled = false);
 };
 
+const getSelectedHousingType = (ad) => (housingType.value === DEFAULT_PARAMETER) ? true : ad.offer.type === housingType.value;
+const getSelectedHousingPrice = (ad) => (housingType.value === DEFAULT_PARAMETER) ? true : ad.offer.type === housingType.value;
+
+const getSelectedFeatures = () => {
+  const selectedFeatures = [];
+  filterFeatures.forEach((item) => {
+    if (item.checked) {
+      selectedFeatures.push(item.value);
+    }
+  });
+  console.log(selectedFeatures);
+};
+
+
+// filterForm.addEventListener('change', (event) => {
+//   if (event.target.matches('select[id="housing-type"]')) {
+//     console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
+//     return (event.target.value === DEFAULT_PARAMETER) ? true : event.target.value;
+//   }
+//   if (event.target.matches('select[id="housing-price"]')) {
+//     console.log((event.target.value === DEFAULT_PARAMETER) ? true : HOUSING_PRICE_RANGE[event.target.value]);
+//   }
+//   if (event.target.matches('select[id="housing-rooms"]')) {
+//     console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
+//   }
+//   if (event.target.matches('select[id="housing-guests"]')) {
+//     console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
+//   }
+//   if (event.target.matches('input[type="checkbox"]')) {
+//     const selectedFeatures = [];
+//     filterFeatures.forEach((item) => {
+//       if (item.checked) {
+//         selectedFeatures.push(item.value);
+//       }
+//     });
+//     console.log(selectedFeatures);
+//   }
+// });
+
+const getSimilarOffers = (offers) => offers.filter((offer) => getSelectedHousingType(offer));
+
 filterForm.addEventListener('change', (event) => {
-  if (event.target.matches('select[id="housing-type"]')) {
-    console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
-    return (event.target.value === DEFAULT_PARAMETER) ? true : event.target.value;
-  }
-  if (event.target.matches('select[id="housing-price"]')) {
-    console.log((event.target.value === DEFAULT_PARAMETER) ? true : HOUSING_PRICE_RANGE[event.target.value]);
-  }
-  if (event.target.matches('select[id="housing-rooms"]')) {
-    console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
-  }
-  if (event.target.matches('select[id="housing-guests"]')) {
-    console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
-  }
+  // console.log(typeof(getSelectedHousingType()));
+  // const filterNode = event.currentTarget.elements;
+  // console.log((filterNode['housing-type'].value === DEFAULT_PARAMETER) ? true : filterNode['housing-type'].value);
+  // console.log((filterNode['housing-price'].value === DEFAULT_PARAMETER) ? true : HOUSING_PRICE_RANGE[filterNode['housing-price'].value]);
+  // console.log((filterNode['housing-rooms'].value === DEFAULT_PARAMETER) ? true : filterNode['housing-rooms'].value);
+  // console.log((filterNode['housing-guests'].value === DEFAULT_PARAMETER) ? true : filterNode['housing-guests'].value);
+
+  // if (event.target.matches('select[id="housing-type"]')) {
+  //   // console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
+  //   // return (event.target.value === DEFAULT_PARAMETER) ? true : event.target.value;
+  // }
+  // if (event.target.matches('select[id="housing-price"]')) {
+  //   console.log((event.target.value === DEFAULT_PARAMETER) ? true : HOUSING_PRICE_RANGE[event.target.value]);
+  // }
+  // if (event.target.matches('select[id="housing-rooms"]')) {
+  //   console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
+  // }
+  // if (event.target.matches('select[id="housing-guests"]')) {
+  //   console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
+  // }
   if (event.target.matches('input[type="checkbox"]')) {
     const selectedFeatures = [];
     filterFeatures.forEach((item) => {
@@ -58,24 +111,22 @@ filterForm.addEventListener('change', (event) => {
   }
 });
 
-// filterForm.addEventListener('change', (event) => {
-//   // const housingType = filterForm.querySelector('#housing-type');
-//   if (event.target.matches('select[id="housing-type"]')) {
-//     console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
-//     return (event.target.value === DEFAULT_PARAMETER) ? true : event.target.value;
-//   }
-// });
+const getBetterOffers = (offers) => offers.slice().sort((a, b) =>
+  ((b.offer.features) ? b.offer.features.length : 0) - ((a.offer.features) ? a.offer.features.length : 0),
+);
 
-const renderSimilarOffer = (offers, event) => {
-  // const housingType = filterForm.querySelector('#housing-type');
-  if (event.target.matches('select[id="housing-type"]')) {
-    console.log((event.target.value === DEFAULT_PARAMETER) ? true : event.target.value);
-    // const filterValue = (event.target.value === DEFAULT_PARAMETER) ? true : event.target.value;
-    // return item.offer.type === filterValue;
-  }
+const showInitialOffers = (items) => {
+  const allPosts = getBetterOffers(items);
+  const posts = allPosts.slice(0, RENDERED_PINS_COUNT);
+  drawPins(posts);
 };
-const onChangeFilter = (data) => {
-  // filterForm.addEventListener('change', (event) => renderSimilarOffer(data, event));
+
+const onChangeFilters = (data) => {
+  removeOfferPins();
+  resetMap();
+  const similarOffers = getBetterOffers(getSimilarOffers(data));
+  console.log(similarOffers);
+  drawPins(similarOffers.slice(0, RENDERED_PINS_COUNT));
 };
 
 
@@ -83,9 +134,6 @@ const onChangeFilter = (data) => {
 //   return (x) => array.includes(x);
 // }
 
-// function inBetween(a, b) {
-//   return (x) => (x >= a && x <= b);
-// }
 
 // filterFeaturesSet.addEventListener('change', (event) => {
 //   if (event.target.checked) {
@@ -95,4 +143,4 @@ const onChangeFilter = (data) => {
 //   }
 // });
 
-export { deactivateFilters, activateFilters, filterForm, filterFormFieldsets, filterFormInputs, onChangeFilter };
+export { deactivateFilters, activateFilters, getSimilarOffers, showInitialOffers, filterForm, filterFormFieldsets, filterFormInputs, onChangeFilters, getSelectedHousingType };

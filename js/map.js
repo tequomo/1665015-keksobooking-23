@@ -99,6 +99,10 @@ const createOfferPin = (offer) => {
   markersCluster.addLayer(offerPin);
 };
 
+const drawPins = (dataset) => {
+  dataset.forEach((data) => createOfferPin(data));
+};
+
 const resetMap = () => {
   mainPin.setLatLng(
     {
@@ -115,7 +119,7 @@ const resetMap = () => {
 };
 
 const removeOfferPins = () => {
-  markersCluster.remove();
+  markersCluster.clearLayers();
 };
 
-export { createOfferPin, resetMap, removeOfferPins };
+export { createOfferPin, drawPins, resetMap, removeOfferPins, initMap };
