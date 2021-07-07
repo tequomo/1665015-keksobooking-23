@@ -11,15 +11,20 @@ const offerAddress = offerForm.querySelector('#address');
 
 const parseAddress = (coords) => `${(coords.lat).toFixed(5)}, ${(coords.lng).toFixed(5)}`;
 
-const bookingMap = L.map('map-canvas')
-  .on('load', () => {
+const bookingMap = L.map('map-canvas');
+
+const initMap = () => {
+  bookingMap.on('load', () => {
     enableInteractivity();
     offerAddress.value = parseAddress(TOKIO_CENTER_COORDS);
   })
-  .setView({
-    lat: TOKIO_CENTER_COORDS.lat,
-    lng: TOKIO_CENTER_COORDS.lng,
-  }, 12);
+    .setView({
+      lat: TOKIO_CENTER_COORDS.lat,
+      lng: TOKIO_CENTER_COORDS.lng,
+    }, 12);
+};
+
+initMap();
 
 // L.tileLayer(
 //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

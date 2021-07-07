@@ -1,3 +1,4 @@
+import { onChangeFilter } from './filter.js';
 import { createOfferPin } from './map.js';
 import { showFetchErrorMessage } from './message.js';
 import { showErrorMessage, showSuccessMessage } from './message.js';
@@ -12,7 +13,9 @@ const getOffersData = () => {
   fetch(`${SERVER_URI}/data`)
     .then((response) => (response.ok) ? response.json() : (() => { throw new Error(`${response.status} — ${response.statusText}`); }),
     )
-    .then((items) => items.filter((item) => item.offer.type ==='bungalow'))
+    // .then((items) => items.filter((item) => item.offer.type ==='bungalow'))
+    // .then((items) => items.filter(onChangeFilter))
+    // .then((items) => console.log(items))
     .then((items) => items.slice().sort((a, b) =>
       ((b.offer.features) ? b.offer.features.length : 0) - ((a.offer.features) ? a.offer.features.length : 0),
     ))
@@ -23,6 +26,7 @@ const getOffersData = () => {
       });
     },
     )
+    .then((items) => onChangeFilter(items))
     .catch((error) => showFetchErrorMessage(error));
 };
 
