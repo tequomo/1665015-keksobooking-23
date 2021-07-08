@@ -56,4 +56,6 @@ const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const inBetween = (a, b) => (value) => (value >= a && value < b);
 
-export { getRandomInteger, getRandomFloat, getRandomLengthArray, isEscEvent, inBetween };
+const inArray = (array) => (value) => array.includes(value);
+
+export { getRandomInteger, getRandomFloat, getRandomLengthArray, isEscEvent, inBetween, inArray };
