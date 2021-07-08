@@ -1,11 +1,9 @@
 import { RENDERED_PINS_COUNT } from './api.js';
 import { drawPins, removeOfferPins, resetMap } from './map.js';
-import { /*inArray*/ } from './util.js';
 
 const filterForm = document.querySelector('.map__filters');
 const filterFormFieldsets = filterForm.querySelectorAll('fieldset');
 const filterFormInputs = filterForm.querySelectorAll('select');
-// const filterFeaturesSet = filterForm.querySelector('.map__features');
 const housingType = filterForm.querySelector('#housing-type');
 const housingPrice = filterForm.querySelector('#housing-price');
 const housingRooms = filterForm.querySelector('#housing-rooms');
@@ -29,7 +27,6 @@ const HOUSING_PRICE_RANGE = {
     max: Infinity,
   },
 };
-
 
 const deactivateFilters = (form, nodes, inputs) => {
   form.classList.add('map__filters--disabled');
@@ -87,4 +84,8 @@ const onChangeFilters = (data) => {
   drawPins(similarOffers.slice(0, RENDERED_PINS_COUNT));
 };
 
-export { deactivateFilters, activateFilters, getSimilarOffers, showInitialOffers, filterForm, filterFormFieldsets, filterFormInputs, onChangeFilters, getSelectedHousingType };
+const filterChangeHandler = (callback) => {
+  filterForm.addEventListener('change', callback);
+};
+
+export { deactivateFilters, activateFilters, getSimilarOffers, showInitialOffers, filterForm, filterFormFieldsets, filterFormInputs, onChangeFilters, getSelectedHousingType, filterChangeHandler };

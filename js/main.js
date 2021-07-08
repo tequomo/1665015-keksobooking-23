@@ -7,17 +7,28 @@ import './state.js';
 import './filter.js';
 import './api.js';
 import './message.js';
-import { /*getOffersData*/ } from './api.js';
-import { /*drawPins*/ } from './map.js';
-import { /*showFetchErrorMessage*/ } from './message.js';
+import { getOffersData, SERVER_URI } from './api.js';
+import { initMap } from './map.js';
+import { showFetchErrorMessage } from './message.js';
+import { activateFilters, filterForm, filterFormFieldsets, filterFormInputs, filterChangeHandler, onChangeFilters, showInitialOffers } from './filter.js';
+import { debounce } from './utils/debounce.js';
+import { disableInteractivity } from './state.js';
 
-// const VISIBLE_PINS_COUNT = 10;
+const REDRAW_DELAY = 500;
+let fetchedData = [];
 
+disableInteractivity();
 
-// getOffersData()
-//   .then((items) => items.slice().sort((a, b) =>
-//     ((b.offer.features) ? b.offer.features.length : 0) - ((a.offer.features) ? a.offer.features.length : 0),
-//   ))
-//   .then((allPosts) => allPosts.slice(0, VISIBLE_PINS_COUNT))
-//   .then((posts) => drawPins(posts))
-//   .catch((error) => showFetchErrorMessage(error));
+initMap()
+  .then(
+    getOffersData(
+      SERVER_URI,
+      (items) => {
+        fetchedData = items;
+        filterChangeHandler(debounce(() => onChangeFilters(items), REDRAW_DELAY));
+        showInitialOffers(items);
+      }, showFetchErrorMessage),
+  )
+  .then(activateFilters(filterForm, filterFormFieldsets, filterFormInputs));
+
+export {fetchedData};

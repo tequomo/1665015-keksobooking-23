@@ -54,8 +54,4 @@ const getRandomLengthArray = (sourceArray) => {
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-const inBetween = (a, b) => (value) => (value >= a && value < b);
-
-const inArray = (array) => (value) => array.includes(value);
-
-export { getRandomInteger, getRandomFloat, getRandomLengthArray, isEscEvent, inBetween, inArray };
+export { getRandomInteger, getRandomFloat, getRandomLengthArray, isEscEvent };

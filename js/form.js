@@ -1,6 +1,7 @@
 import { sendOfferData } from './api.js';
 import { APARTMENTS } from './card.js';
-import { resetMap } from './map.js';
+import { filterForm, onChangeFilters } from './filter.js';
+import { fetchedData } from './main.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -107,7 +108,8 @@ const setInitialFormData = () => {
 
 const setInitialState = () => {
   offerForm.reset();
-  resetMap();
+  filterForm.reset();
+  onChangeFilters(fetchedData);
   setInitialFormData();
 };
 

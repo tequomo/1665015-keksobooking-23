@@ -1,5 +1,5 @@
-import { enableInteractivity } from './state.js';
-import { offerForm } from './form.js';
+// import { enableInteractivity } from './state.js';
+import { activateAdForm, adFormFieldsets, offerForm } from './form.js';
 import { generateCard } from './card.js';
 
 const TOKIO_CENTER_COORDS = {
@@ -13,9 +13,10 @@ const parseAddress = (coords) => `${(coords.lat).toFixed(5)}, ${(coords.lng).toF
 
 const bookingMap = L.map('map-canvas');
 
-const initMap = () => {
+const initMap = async () => {
   bookingMap.on('load', () => {
-    enableInteractivity();
+    // enableInteractivity();
+    activateAdForm(offerForm, adFormFieldsets);
     offerAddress.value = parseAddress(TOKIO_CENTER_COORDS);
   })
     .setView({
@@ -24,7 +25,6 @@ const initMap = () => {
     }, 12);
 };
 
-initMap();
 
 // L.tileLayer(
 //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
