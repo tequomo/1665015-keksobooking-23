@@ -1,6 +1,6 @@
-import { enableInteractivity } from './state.js';
-import { offerForm } from './form.js';
-import { /*offers,*/ generateCard } from './card.js';
+// import { enableInteractivity } from './state.js';
+import { activateAdForm, adFormFieldsets, offerForm } from './form.js';
+import { generateCard } from './card.js';
 
 const TOKIO_CENTER_COORDS = {
   lat: 35.6895000,
@@ -8,19 +8,23 @@ const TOKIO_CENTER_COORDS = {
 };
 
 const offerAddress = offerForm.querySelector('#address');
-// const offerAddress = document.querySelector('#address');
 
 const parseAddress = (coords) => `${(coords.lat).toFixed(5)}, ${(coords.lng).toFixed(5)}`;
 
-const bookingMap = L.map('map-canvas')
-  .on('load', () => {
-    enableInteractivity();
+const bookingMap = L.map('map-canvas');
+
+const initMap = async () => {
+  bookingMap.on('load', () => {
+    // enableInteractivity();
+    activateAdForm(offerForm, adFormFieldsets);
     offerAddress.value = parseAddress(TOKIO_CENTER_COORDS);
   })
-  .setView({
-    lat: TOKIO_CENTER_COORDS.lat,
-    lng: TOKIO_CENTER_COORDS.lng,
-  }, 12);
+    .setView({
+      lat: TOKIO_CENTER_COORDS.lat,
+      lng: TOKIO_CENTER_COORDS.lng,
+    }, 12);
+};
+
 
 // L.tileLayer(
 //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -95,6 +99,10 @@ const createOfferPin = (offer) => {
   markersCluster.addLayer(offerPin);
 };
 
+const drawPins = (dataset) => {
+  dataset.forEach((data) => createOfferPin(data));
+};
+
 const resetMap = () => {
   mainPin.setLatLng(
     {
@@ -110,8 +118,8 @@ const resetMap = () => {
   offerAddress.value = parseAddress(TOKIO_CENTER_COORDS);
 };
 
-// offers.forEach((element) => {
-//   createOfferPin(element);
-// });
+const removeOfferPins = () => {
+  markersCluster.clearLayers();
+};
 
-export { createOfferPin, resetMap };
+export { createOfferPin, drawPins, resetMap, removeOfferPins, initMap };

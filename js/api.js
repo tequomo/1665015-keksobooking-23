@@ -1,28 +1,19 @@
-import { createOfferPin } from './map.js';
-import { showFetchErrorMessage } from './message.js';
-import { showErrorMessage, showSuccessMessage } from './message.js';
-// import { resetMap } from './map.js';
-// import { setInitialFormData, offerForm } from './form.js';
+import { showErrorMessage, showSuccessMessage} from './message.js';
 
-const getOffersData = () => {
+const SERVER_URI = 'https://23.javascript.pages.academy/keksobooking';
+const RENDERED_PINS_COUNT = 10;
 
-  fetch('https://23.javascript.pages.academy/keksobooking/data')
+const getOffersData = (getUrl, onSuccess, onFail) => {
+  fetch(`${getUrl  }/data`)
     .then((response) => (response.ok) ? response.json() : (() => { throw new Error(`${response.status} — ${response.statusText}`); }),
     )
-    .then((posts) => {
-      posts.forEach((element) => {
-        createOfferPin(element);
-      });
-    },
-    )
-    .catch((error) => showFetchErrorMessage(error));
+    .then((items) => onSuccess(items))
+    .catch((error) => onFail(error));
 };
 
-
 const sendOfferData = (data, onSuccess) => {
-
   fetch(
-    'https://23.javascript.pages.academy/keksobooking',
+    `${SERVER_URI}`,
     {
       method: 'POST',
       body: data,
@@ -39,7 +30,7 @@ const sendOfferData = (data, onSuccess) => {
     })
     .catch(() => showErrorMessage());
 
-// .then((ad) => createOfferPin);
+  // .then((ad) => createOfferPin);
 };
 
-export { getOffersData, sendOfferData };
+export { getOffersData, sendOfferData, RENDERED_PINS_COUNT, SERVER_URI };

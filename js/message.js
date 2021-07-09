@@ -77,7 +77,6 @@ const showFetchErrorMessage = (error) => {
   const errorFetchMessage = errorMessageTemplate.cloneNode(true);
   errorFetchMessage.querySelector('.error__button').remove();
   const errorNode = document.createElement('p');
-  // errorNode.classList.add('error__message');
   errorNode.style.fontSize = '25px';
   errorNode.style.color = '#ffffff';
   errorNode.textContent = error;
