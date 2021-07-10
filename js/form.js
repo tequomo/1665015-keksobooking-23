@@ -1,7 +1,6 @@
 import { sendOfferData } from './api.js';
 import { APARTMENTS } from './card.js';
-import { filterForm, onChangeFilters } from './filter.js';
-import { fetchedData } from './main.js';
+import { setInitialState } from './main.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -106,12 +105,6 @@ const setInitialFormData = () => {
   setGuestCapacity(roomNumber.value);
 };
 
-const setInitialState = () => {
-  offerForm.reset();
-  filterForm.reset();
-  onChangeFilters(fetchedData);
-  setInitialFormData();
-};
 
 adTitle.addEventListener('input', onInputTitle);
 checkInTime.addEventListener('change', onSelectInTime);
