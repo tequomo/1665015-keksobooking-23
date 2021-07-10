@@ -1,10 +1,8 @@
 import { offerForm } from './form.js';
 
-// const avatarChooser = offerForm.querySelector('#avatar');
 const avatarChooser = offerForm.querySelector('.ad-form__field input[type="file"]');
 const avatarThumb = offerForm.querySelector('.ad-form-header__preview img');
 const housingPhotoChooser = offerForm.querySelector('.ad-form__upload input[type="file"]');
-// const housingPhotoChooser = offerForm.querySelector('#images');
 const housingPhotoThumb = offerForm.querySelector('.ad-form__photo');
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];

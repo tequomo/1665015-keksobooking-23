@@ -94,4 +94,64 @@ const hideFetchErrorMessage = () => {
   errorMessage.remove();
 };
 
+
+class messageHandler {
+  constructor() {
+    this.onClickMessage = (evt) => {
+      evt.preventDefault();
+      this.hideMessage();
+    };
+    this.onEscMessage = (evt) => {
+      if (isEscEvent(evt)) {
+        this.hideMessage();
+      }
+    };
+    this.onClickButtonMessage = (evt) => {
+      evt.preventDefault();
+      this.hideMessage();
+      evt.stopPropagation();
+    };
+  }
+
+  addClickHandler() {
+    document.addEventListener('click', this.onClickMessage);
+  }
+
+  removeClickHandler() {
+    document.removeEventListener('click', this.onClickMessage);
+  }
+
+  addClickButtonHandler() {
+    document.addEventListener('click', this.onClickButtonMessage);
+  }
+
+  removeClickButtonHandler() {
+    document.removeEventListener('click', this.onClickButtonMessage);
+  }
+
+  addEsckHandler() {
+    document.addEventListener('keydown', this.onEscMessage);
+  }
+
+  removeEscHandler() {
+    document.removeEventListener('keydown', this.onEscMessage);
+  }
+
+  showMessage(template) {
+    const message = template.cloneNode(true);
+    document.body.insertAdjacentElement('beforeend', message);
+    this.addClickHandler;
+    this.addEsckHandler;
+  }
+
+  hideMessage(evt) {
+    // const message = document.querySelector('.success');
+    const message = evt.currentTarget;
+    this.removeClickHandler;
+    this.removeEscHandler;
+    message.remove();
+  }
+}
+
+
 export { showSuccessMessage, showErrorMessage, showFetchErrorMessage };
