@@ -12,34 +12,26 @@ const DEFAULT_AVATAR = 'img/muffin-grey.svg';
 
 
 const showThumbnail = (photoSource, photoDestination) => {
-
   const file = photoSource.files[0];
   const fileName = file.name.toLowerCase();
-
   const fileTypeMatches = FILE_TYPES.some((ext) => ext === fileName.split('.').pop());
-
   if (fileTypeMatches) {
     const reader = new FileReader();
-
     reader.addEventListener('load', () => {
       photoDestination.src = reader.result;
     });
-
     reader.readAsDataURL(file);
   }
 };
 
 const createImgNode = (parentNode) => {
-
   parentNode.style.display = 'flex';
   parentNode.style.justifyContent = 'center';
   parentNode.style.alignItems = 'center';
-
   const imgNode = document.createElement('img');
   imgNode.width = IMG_WIDTH;
   imgNode.height = IMG_HEIGHT;
   imgNode.alt = 'Фотография жилья';
-
   if (parentNode.hasChildNodes()) {
     parentNode.innerHTML = '';
   }
