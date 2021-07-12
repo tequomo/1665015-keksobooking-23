@@ -1,5 +1,3 @@
-import { getOffersArray, OFFERS_COUNT } from './data.js';
-
 const APARTMENTS = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
@@ -97,6 +95,4 @@ const generateCard = (advert) => {
   return newCard;
 };
 
-const offers = getOffersArray(OFFERS_COUNT);
-
-export { generateCard, offers, APARTMENTS };
+export { generateCard, APARTMENTS };

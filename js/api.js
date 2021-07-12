@@ -29,8 +29,6 @@ const sendOfferData = (data, onSuccess) => {
       }
     })
     .catch(() => showErrorMessage());
-
-  // .then((ad) => createOfferPin);
 };
 
 export { getOffersData, sendOfferData, RENDERED_PINS_COUNT, SERVER_URI };
