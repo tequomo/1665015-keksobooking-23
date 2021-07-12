@@ -1,3 +1,4 @@
+import { createOwnOfferPin } from './map.js';
 import { showErrorMessage, showSuccessMessage} from './message.js';
 
 const SERVER_URI = 'https://23.javascript.pages.academy/keksobooking';
@@ -23,14 +24,13 @@ const sendOfferData = (data, onSuccess) => {
       if (response.ok) {
         onSuccess();
         showSuccessMessage();
+        createOwnOfferPin(response.json());
       } else {
         showErrorMessage();
         throw new Error(`${response.status} — ${response.statusText}`);
       }
     })
     .catch(() => showErrorMessage());
-
-  // .then((ad) => createOfferPin);
 };
 
 export { getOffersData, sendOfferData, RENDERED_PINS_COUNT, SERVER_URI };

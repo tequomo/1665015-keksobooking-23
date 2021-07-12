@@ -99,6 +99,37 @@ const createOfferPin = (offer) => {
   markersCluster.addLayer(offerPin);
 };
 
+const createOwnOfferPin = (offer) => {
+
+  const offerPinIcon = L.icon({
+    iconUrl: 'img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    shadowUrl: 'leaflet/images/marker-shadow.png',
+    shadowSize: [41, 41],
+    shadowAnchor: [11, 40],
+  });
+
+  const offerPin = L.marker(
+    {
+      lat: offer.location.lat,
+      lng: offer.location.lng,
+    },
+    {
+      icon: offerPinIcon,
+    },
+    // ).addTo(bookingMap);
+  );
+
+  offerPin.bindPopup(generateCard(offer),
+    {
+      keepInView: true,
+    },
+  );
+
+  markersCluster.addLayer(offerPin);
+};
+
 const drawPins = (dataset) => {
   dataset.forEach((data) => createOfferPin(data));
 };
@@ -122,4 +153,4 @@ const removeOfferPins = () => {
   markersCluster.clearLayers();
 };
 
-export { createOfferPin, drawPins, resetMap, removeOfferPins, initMap };
+export { createOfferPin, drawPins, resetMap, removeOfferPins, initMap, createOwnOfferPin };
