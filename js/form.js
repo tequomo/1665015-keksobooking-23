@@ -1,6 +1,6 @@
 import { sendOfferData } from './api.js';
 import { APARTMENTS } from './card.js';
-import { setInitialState } from './main.js';
+import { setInitialState } from './state.js';
 
 const offerForm = document.querySelector('.ad-form');
 const livingType = offerForm.querySelector('#type');
@@ -12,6 +12,7 @@ const checkInTime = offerForm.querySelector('#timein');
 const checkOutTime = offerForm.querySelector('#timeout');
 const adFormFieldsets = offerForm.querySelectorAll('fieldset');
 const adFormResetButton = offerForm.querySelector('.ad-form__reset');
+const requiredInputs = offerForm.querySelectorAll('input:required');
 
 
 const MIN_TITLE_LENGTH = 30;
@@ -32,6 +33,11 @@ const ROOMS_FOR_GUESTS = {
   100: [0],
 };
 
+const ERROR_BORDER = {
+  width: '2px',
+  color: '#FF0000',
+};
+
 const deactivateAdForm = (form, nodes) => {
   form.classList.add('ad-form--disabled');
   nodes.forEach((node) => node.disabled = true);
@@ -42,8 +48,7 @@ const activateAdForm = (form, nodes) => {
   nodes.forEach((node) => node.disabled = false);
 };
 
-const colorizeInput = () => {
-  const checkNode = event.currentTarget;
+const setBorderColor = (checkNode) => {
   if (checkNode.validity.valid) {
     if (checkNode.hasAttribute('style'))
     {
@@ -51,15 +56,20 @@ const colorizeInput = () => {
     }
   }
   else {
-    checkNode.style.borderWidth = '2px';
-    checkNode.style.borderColor = '#FF0000';
+    checkNode.style.borderWidth = ERROR_BORDER.width;
+    checkNode.style.borderColor = ERROR_BORDER.color;
   }
 };
 
-const verifyTitle = () => {
+const colorizeInput = (event) => {
+  const watchedNode = event.currentTarget;
+  setBorderColor(watchedNode);
+};
+
+const verifyTitle = (event) => {
   const formTitle = event.currentTarget;
   let alertString = '';
-  colorizeInput();
+  colorizeInput(event);
   if (formTitle.value.length < MIN_TITLE_LENGTH) {
     alertString = `Заголовок объявления должен содержать не менее ${MIN_TITLE_LENGTH} символов. Еще осталось ${MIN_TITLE_LENGTH - formTitle.value.length}.`;
   }
@@ -105,16 +115,16 @@ const setGuestCapacity = (selectedRooms) => {
   guestsCapacity.options[Math.min(...guestsAvailableIndex)].selected = true;
 };
 
-const synchronizeCheckTime = (synchronizedNode) => {
+const synchronizeCheckTime = (event, synchronizedNode) => {
   synchronizedNode.value = event.currentTarget.value;
 };
 
-const onInputTitle = () => verifyTitle();
-const onSelectInTime = () => synchronizeCheckTime(checkOutTime);
-const onSelectOutTime = () => synchronizeCheckTime(checkInTime);
+const onInputTitle = () => verifyTitle(event);
+const onSelectInTime = () => synchronizeCheckTime(event, checkOutTime);
+const onSelectOutTime = () => synchronizeCheckTime(event, checkInTime);
 const onSelectHousing = () => setCostValues();
 const onSelectRoomsNumber = () => setGuestCapacity();
-const onInputLivingPrice = () => colorizeInput();
+const onInputLivingPrice = () => colorizeInput(event);
 
 const setInitialFormData = () => {
   setCostValues();
@@ -127,6 +137,13 @@ checkOutTime.addEventListener('change', onSelectOutTime);
 livingType.addEventListener('change', onSelectHousing);
 roomNumber.addEventListener('change', onSelectRoomsNumber);
 livingPrice.addEventListener('input', onInputLivingPrice);
+
+offerForm.addEventListener('change', () => {
+  requiredInputs.forEach((node) => {
+    setBorderColor(node);
+  });
+});
+
 
 offerForm.addEventListener('submit', (event) => {
   event.preventDefault();

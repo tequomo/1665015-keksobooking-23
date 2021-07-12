@@ -77,15 +77,15 @@ const showInitialOffers = (items) => {
   drawPins(posts);
 };
 
-const onChangeFilters = (data) => {
+const redrawFilteredOffers = (data) => {
   removeOfferPins();
   resetMap();
   const similarOffers = getBetterOffers(getSimilarOffers(data));
   drawPins(similarOffers.slice(0, RENDERED_PINS_COUNT));
 };
 
-const filterChangeHandler = (callback) => {
+const onChangeFilters = (callback) => {
   filterForm.addEventListener('change', callback);
 };
 
-export { deactivateFilters, activateFilters, getSimilarOffers, showInitialOffers, filterForm, filterFormFieldsets, filterFormInputs, onChangeFilters, getSelectedHousingType, filterChangeHandler };
+export { deactivateFilters, activateFilters, getSimilarOffers, showInitialOffers, filterForm, filterFormFieldsets, filterFormInputs, redrawFilteredOffers, getSelectedHousingType, onChangeFilters };
