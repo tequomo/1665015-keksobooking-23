@@ -36,10 +36,10 @@ initMap()
       SERVER_URI,
       (items) => {
         fetchedData = items;
+        activateFilters(filterForm, filterFormFieldsets, filterFormInputs);
         filterChangeHandler(debounce(() => onChangeFilters(items), REDRAW_DELAY));
         showInitialOffers(items);
       }, showFetchErrorMessage),
-  )
-  .then(activateFilters(filterForm, filterFormFieldsets, filterFormInputs));
+  );
 
 export { setInitialState};
