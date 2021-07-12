@@ -2,6 +2,18 @@ import { sendOfferData } from './api.js';
 import { APARTMENTS } from './card.js';
 import { setInitialState } from './main.js';
 
+const offerForm = document.querySelector('.ad-form');
+const livingType = offerForm.querySelector('#type');
+const livingPrice = offerForm.querySelector('#price');
+const adTitle = offerForm.querySelector('#title');
+const roomNumber = offerForm.querySelector('#room_number');
+const guestsCapacity = offerForm.querySelector('#capacity');
+const checkInTime = offerForm.querySelector('#timein');
+const checkOutTime = offerForm.querySelector('#timeout');
+const adFormFieldsets = offerForm.querySelectorAll('fieldset');
+const adFormResetButton = offerForm.querySelector('.ad-form__reset');
+
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -20,17 +32,6 @@ const ROOMS_FOR_GUESTS = {
   100: [0],
 };
 
-const offerForm = document.querySelector('.ad-form');
-const livingType = offerForm.querySelector('#type');
-const livingPrice = offerForm.querySelector('#price');
-const adTitle = offerForm.querySelector('#title');
-const roomNumber = offerForm.querySelector('#room_number');
-const guestsCapacity = offerForm.querySelector('#capacity');
-const checkInTime = offerForm.querySelector('#timein');
-const checkOutTime = offerForm.querySelector('#timeout');
-const adFormFieldsets = offerForm.querySelectorAll('fieldset');
-const adFormResetButton = offerForm.querySelector('.ad-form__reset');
-
 const deactivateAdForm = (form, nodes) => {
   form.classList.add('ad-form--disabled');
   nodes.forEach((node) => node.disabled = true);
@@ -41,9 +42,24 @@ const activateAdForm = (form, nodes) => {
   nodes.forEach((node) => node.disabled = false);
 };
 
+const colorizeInput = () => {
+  const checkNode = event.currentTarget;
+  if (checkNode.validity.valid) {
+    if (checkNode.hasAttribute('style'))
+    {
+      checkNode.removeAttribute('style');
+    }
+  }
+  else {
+    checkNode.style.borderWidth = '2px';
+    checkNode.style.borderColor = '#FF0000';
+  }
+};
+
 const verifyTitle = () => {
   const formTitle = event.currentTarget;
   let alertString = '';
+  colorizeInput();
   if (formTitle.value.length < MIN_TITLE_LENGTH) {
     alertString = `Заголовок объявления должен содержать не менее ${MIN_TITLE_LENGTH} символов. Еще осталось ${MIN_TITLE_LENGTH - formTitle.value.length}.`;
   }
@@ -98,19 +114,19 @@ const onSelectInTime = () => synchronizeCheckTime(checkOutTime);
 const onSelectOutTime = () => synchronizeCheckTime(checkInTime);
 const onSelectHousing = () => setCostValues();
 const onSelectRoomsNumber = () => setGuestCapacity();
+const onInputLivingPrice = () => colorizeInput();
 
 const setInitialFormData = () => {
-  livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
-  livingPrice.min = MIN_PRICE[APARTMENTS[livingType.value]];
+  setCostValues();
   setGuestCapacity(roomNumber.value);
 };
-
 
 adTitle.addEventListener('input', onInputTitle);
 checkInTime.addEventListener('change', onSelectInTime);
 checkOutTime.addEventListener('change', onSelectOutTime);
 livingType.addEventListener('change', onSelectHousing);
 roomNumber.addEventListener('change', onSelectRoomsNumber);
+livingPrice.addEventListener('input', onInputLivingPrice);
 
 offerForm.addEventListener('submit', (event) => {
   event.preventDefault();

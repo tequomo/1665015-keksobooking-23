@@ -2,12 +2,12 @@
 import { activateAdForm, adFormFieldsets, offerForm } from './form.js';
 import { generateCard } from './card.js';
 
+const offerAddress = offerForm.querySelector('#address');
+
 const TOKIO_CENTER_COORDS = {
   lat: 35.6895000,
   lng: 139.6917100,
 };
-
-const offerAddress = offerForm.querySelector('#address');
 
 const parseAddress = (coords) => `${(coords.lat).toFixed(5)}, ${(coords.lng).toFixed(5)}`;
 
