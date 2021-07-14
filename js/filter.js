@@ -1,19 +1,9 @@
 import { RENDERED_PINS_COUNT } from './api.js';
 import { drawPins, removeOfferPins, resetMap } from './map.js';
 
-const filterForm = document.querySelector('.map__filters');
-const filterFormFieldsets = filterForm.querySelectorAll('fieldset');
-const filterFormInputs = filterForm.querySelectorAll('select');
-const housingType = filterForm.querySelector('#housing-type');
-const housingPrice = filterForm.querySelector('#housing-price');
-const housingRooms = filterForm.querySelector('#housing-rooms');
-const housingGuests = filterForm.querySelector('#housing-guests');
-const filterFeatures = filterForm.querySelectorAll('.map__checkbox');
-
-
 const DEFAULT_PARAMETER = 'any';
 
-const HOUSING_PRICE_RANGE = {
+const housingPriceRange = {
   low: {
     min: 0,
     max: 10000,
@@ -28,6 +18,16 @@ const HOUSING_PRICE_RANGE = {
   },
 };
 
+const filterForm = document.querySelector('.map__filters');
+const filterFormFieldsets = filterForm.querySelectorAll('fieldset');
+const filterFormInputs = filterForm.querySelectorAll('select');
+const housingType = filterForm.querySelector('#housing-type');
+const housingPrice = filterForm.querySelector('#housing-price');
+const housingRooms = filterForm.querySelector('#housing-rooms');
+const housingGuests = filterForm.querySelector('#housing-guests');
+const filterFeatures = filterForm.querySelectorAll('.map__checkbox');
+
+
 const deactivateFilters = (form, nodes, inputs) => {
   form.classList.add('map__filters--disabled');
   nodes.forEach((node) => node.disabled = true);
@@ -41,7 +41,7 @@ const activateFilters = (form, nodes, inputs) => {
 };
 
 const getSelectedHousingType = (ad) => (housingType.value === DEFAULT_PARAMETER) ? true : ad.offer.type === housingType.value;
-const getSelectedHousingPrice = (ad) => (housingPrice.value === DEFAULT_PARAMETER) ? true : (ad.offer.price >= HOUSING_PRICE_RANGE[housingPrice.value].min && ad.offer.price < HOUSING_PRICE_RANGE[housingPrice.value].max);
+const getSelectedHousingPrice = (ad) => (housingPrice.value === DEFAULT_PARAMETER) ? true : (ad.offer.price >= housingPriceRange[housingPrice.value].min && ad.offer.price < housingPriceRange[housingPrice.value].max);
 const getSelectedHousingRooms = (ad) => (housingRooms.value === DEFAULT_PARAMETER) ? true : ad.offer.rooms === Number(housingRooms.value);
 const getSelectedHousingGuests = (ad) => (housingGuests.value === DEFAULT_PARAMETER) ? true : ad.offer.guests === Number(housingGuests.value);
 
@@ -88,4 +88,4 @@ const onChangeFilters = (callback) => {
   filterForm.addEventListener('change', callback);
 };
 
-export { deactivateFilters, activateFilters, getSimilarOffers, showInitialOffers, filterForm, filterFormFieldsets, filterFormInputs, redrawFilteredOffers, getSelectedHousingType, onChangeFilters };
+export { deactivateFilters, activateFilters, getSimilarOffers, showInitialOffers, redrawFilteredOffers, getSelectedHousingType, onChangeFilters, filterForm, filterFormFieldsets, filterFormInputs };

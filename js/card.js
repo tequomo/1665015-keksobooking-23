@@ -1,4 +1,4 @@
-const APARTMENTS = {
+const apartments = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
   'house': 'Дом',
@@ -7,6 +7,7 @@ const APARTMENTS = {
 };
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
+
 
 const generateCapacityText = (rooms, guests) => {
   let capacityString = '';
@@ -85,7 +86,7 @@ const generateCard = (advert) => {
   newCard.querySelector('.popup__title').textContent = advert.offer.title;
   newCard.querySelector('.popup__text--address').textContent = advert.offer.address;
   newCard.querySelector('.popup__text--price').innerHTML = `${advert.offer.price}<span> ₽/ночь</span>`;
-  newCard.querySelector('.popup__type').textContent = APARTMENTS[advert.offer.type];
+  newCard.querySelector('.popup__type').textContent = apartments[advert.offer.type];
   newCard.querySelector('.popup__text--capacity').textContent = generateCapacityText(advert.offer.rooms, advert.offer.guests);
   newCard.querySelector('.popup__text--time').textContent = `Заезд после ${advert.offer.checkin}, выезд до ${advert.offer.checkout}`;
   fillDataNode(advert.offer.features, newCard.querySelector('.popup__features'), createFeaturesList);
@@ -95,4 +96,4 @@ const generateCard = (advert) => {
   return newCard;
 };
 
-export { generateCard, APARTMENTS };
+export { generateCard, apartments };

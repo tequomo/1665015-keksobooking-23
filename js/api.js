@@ -1,10 +1,11 @@
-import { showErrorMessage, showSuccessMessage} from './message.js';
+import { showErrorMessage, showSuccessMessage } from './message.js';
 
 const SERVER_URI = 'https://23.javascript.pages.academy/keksobooking';
 const RENDERED_PINS_COUNT = 10;
 
+
 const getOffersData = (getUrl, onSuccess, onFail) => {
-  fetch(`${getUrl  }/data`)
+  fetch(`${getUrl}/data`)
     .then((response) => (response.ok) ? response.json() : (() => { throw new Error(`${response.status} — ${response.statusText}`); }),
     )
     .then((items) => onSuccess(items))
