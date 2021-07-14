@@ -37,6 +37,15 @@ const offerAddress = offerForm.querySelector('#address');
 
 const parseAddress = (coords) => `${(coords.lat || coords.LAT).toFixed(5)}, ${(coords.lng || coords.LNG).toFixed(5)}`;
 
+const createPinIcon = (iconType) => L.icon({
+  iconUrl: iconType.ICON_URL,
+  iconSize: iconType.ICON_SIZE,
+  iconAnchor: iconType.ICON_ANCHOR,
+  shadowUrl: iconType.SHADOW_URL,
+  shadowSize: iconType.SHADOW_SIZE,
+  shadowAnchor: iconType.SHADOW_ANCHOR,
+});
+
 const bookingMap = L.map('map-canvas');
 
 const initMap = async () => {
@@ -59,15 +68,6 @@ L.tileLayer.mapTilesAPI(
 ).addTo(bookingMap);
 L.control.scale().addTo(bookingMap);
 
-const mainPinIcon = L.icon({
-  iconUrl: PinIconParam.MAIN.ICON_URL,
-  iconSize: PinIconParam.MAIN.ICON_SIZE,
-  iconAnchor: PinIconParam.MAIN.ICON_ANCHOR,
-  shadowUrl: PinIconParam.MAIN.SHADOW_URL,
-  shadowSize: PinIconParam.MAIN.SHADOW_SIZE,
-  shadowAnchor: PinIconParam.MAIN.SHADOW_ANCHOR,
-});
-
 const mainPin = L.marker(
   {
     lat: DefaultCoords.LAT,
@@ -75,27 +75,17 @@ const mainPin = L.marker(
   },
   {
     draggable: true,
-    icon: mainPinIcon,
+    icon: createPinIcon(PinIconParam.MAIN),
   },
 ).addTo(bookingMap);
 
 mainPin.on('moveend', (evt) => {
   offerAddress.value = parseAddress(evt.target.getLatLng());
-  // console.log(evt.target.getLatLng());
 });
 
 const markersCluster = L.markerClusterGroup().addTo(bookingMap);
 
 const createOfferPin = (offer) => {
-
-  const offerPinIcon = L.icon({
-    iconUrl: PinIconParam.OFFER.ICON_URL,
-    iconSize: PinIconParam.OFFER.ICON_SIZE,
-    iconAnchor: PinIconParam.OFFER.ICON_ANCHOR,
-    shadowUrl: PinIconParam.OFFER.SHADOW_URL,
-    shadowSize: PinIconParam.OFFER.SHADOW_SIZE,
-    shadowAnchor: PinIconParam.OFFER.SHADOW_ANCHOR,
-  });
 
   const offerPin = L.marker(
     {
@@ -103,7 +93,7 @@ const createOfferPin = (offer) => {
       lng: offer.location.lng,
     },
     {
-      icon: offerPinIcon,
+      icon: createPinIcon(PinIconParam.OFFER),
     },
   );
 

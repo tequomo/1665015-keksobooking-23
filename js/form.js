@@ -1,11 +1,11 @@
 import { sendOfferData } from './api.js';
-import { Apartments } from './card.js';
+import { apartments } from './card.js';
 import { setInitialState } from './state.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
-const MinPriceHousing = {
+const minPriceHousing = {
   'Бунгало': 0,
   'Квартира': 1000,
   'Отель': 3000,
@@ -13,7 +13,7 @@ const MinPriceHousing = {
   'Дворец': 10000,
 };
 
-const RoomsForGuests = {
+const roomsForGuests = {
   1: [1],
   2: [1, 2],
   3: [1, 2, 3],
@@ -81,8 +81,8 @@ const verifyTitle = (event) => {
 };
 
 const setCostValues = () => {
-  livingPrice.placeholder = MinPriceHousing[Apartments[livingType.value]];
-  livingPrice.min = MinPriceHousing[Apartments[livingType.value]];
+  livingPrice.placeholder = minPriceHousing[apartments[livingType.value]];
+  livingPrice.min = minPriceHousing[apartments[livingType.value]];
 };
 
 const getValuesFromSelect = (parentNode, id) => {
@@ -99,7 +99,7 @@ const guests = getValuesFromSelect(offerForm, 'capacity').map((value) => Number(
 const setGuestCapacity = (selectedRooms) => {
   const rooms = (selectedRooms) ? selectedRooms : event.currentTarget.value;
   const guestsAvailableIndex = [];
-  RoomsForGuests[rooms].forEach((value) => {
+  roomsForGuests[rooms].forEach((value) => {
     guestsAvailableIndex.push(guests[value]);
   });
 

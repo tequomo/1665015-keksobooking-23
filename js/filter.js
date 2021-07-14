@@ -3,7 +3,7 @@ import { drawPins, removeOfferPins, resetMap } from './map.js';
 
 const DEFAULT_PARAMETER = 'any';
 
-const HOUSING_PRICE_RANGE = {
+const housingPriceRange = {
   low: {
     min: 0,
     max: 10000,
@@ -41,7 +41,7 @@ const activateFilters = (form, nodes, inputs) => {
 };
 
 const getSelectedHousingType = (ad) => (housingType.value === DEFAULT_PARAMETER) ? true : ad.offer.type === housingType.value;
-const getSelectedHousingPrice = (ad) => (housingPrice.value === DEFAULT_PARAMETER) ? true : (ad.offer.price >= HOUSING_PRICE_RANGE[housingPrice.value].min && ad.offer.price < HOUSING_PRICE_RANGE[housingPrice.value].max);
+const getSelectedHousingPrice = (ad) => (housingPrice.value === DEFAULT_PARAMETER) ? true : (ad.offer.price >= housingPriceRange[housingPrice.value].min && ad.offer.price < housingPriceRange[housingPrice.value].max);
 const getSelectedHousingRooms = (ad) => (housingRooms.value === DEFAULT_PARAMETER) ? true : ad.offer.rooms === Number(housingRooms.value);
 const getSelectedHousingGuests = (ad) => (housingGuests.value === DEFAULT_PARAMETER) ? true : ad.offer.guests === Number(housingGuests.value);
 
