@@ -1,6 +1,29 @@
 import { sendOfferData } from './api.js';
-import { APARTMENTS } from './card.js';
+import { Apartments } from './card.js';
 import { setInitialState } from './state.js';
+
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+
+const MinPriceHousing = {
+  'Бунгало': 0,
+  'Квартира': 1000,
+  'Отель': 3000,
+  'Дом': 5000,
+  'Дворец': 10000,
+};
+
+const RoomsForGuests = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
+
+const ErrorBorder = {
+  WIDTH: '2px',
+  COLOR: '#FF0000',
+};
 
 const offerForm = document.querySelector('.ad-form');
 const livingType = offerForm.querySelector('#type');
@@ -14,29 +37,6 @@ const adFormFieldsets = offerForm.querySelectorAll('fieldset');
 const adFormResetButton = offerForm.querySelector('.ad-form__reset');
 const requiredInputs = offerForm.querySelectorAll('input:required');
 
-
-const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
-
-const MIN_PRICE = {
-  'Бунгало': 0,
-  'Квартира': 1000,
-  'Отель': 3000,
-  'Дом': 5000,
-  'Дворец': 10000,
-};
-
-const ROOMS_FOR_GUESTS = {
-  1: [1],
-  2: [1, 2],
-  3: [1, 2, 3],
-  100: [0],
-};
-
-const ERROR_BORDER = {
-  width: '2px',
-  color: '#FF0000',
-};
 
 const deactivateAdForm = (form, nodes) => {
   form.classList.add('ad-form--disabled');
@@ -56,8 +56,8 @@ const setBorderColor = (checkNode) => {
     }
   }
   else {
-    checkNode.style.borderWidth = ERROR_BORDER.width;
-    checkNode.style.borderColor = ERROR_BORDER.color;
+    checkNode.style.borderWidth = ErrorBorder.WIDTH;
+    checkNode.style.borderColor = ErrorBorder.COLOR;
   }
 };
 
@@ -81,8 +81,8 @@ const verifyTitle = (event) => {
 };
 
 const setCostValues = () => {
-  livingPrice.placeholder = MIN_PRICE[APARTMENTS[livingType.value]];
-  livingPrice.min = MIN_PRICE[APARTMENTS[livingType.value]];
+  livingPrice.placeholder = MinPriceHousing[Apartments[livingType.value]];
+  livingPrice.min = MinPriceHousing[Apartments[livingType.value]];
 };
 
 const getValuesFromSelect = (parentNode, id) => {
@@ -99,7 +99,7 @@ const guests = getValuesFromSelect(offerForm, 'capacity').map((value) => Number(
 const setGuestCapacity = (selectedRooms) => {
   const rooms = (selectedRooms) ? selectedRooms : event.currentTarget.value;
   const guestsAvailableIndex = [];
-  ROOMS_FOR_GUESTS[rooms].forEach((value) => {
+  RoomsForGuests[rooms].forEach((value) => {
     guestsAvailableIndex.push(guests[value]);
   });
 

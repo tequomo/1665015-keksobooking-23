@@ -1,14 +1,14 @@
 import { offerForm } from './form.js';
 
-const avatarChooser = offerForm.querySelector('.ad-form__field input[type="file"]');
-const avatarThumb = offerForm.querySelector('.ad-form-header__preview img');
-const housingPhotoChooser = offerForm.querySelector('.ad-form__upload input[type="file"]');
-const housingPhotoThumb = offerForm.querySelector('.ad-form__photo');
-
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const IMG_WIDTH = 40;
 const IMG_HEIGHT = 44;
 const DEFAULT_AVATAR = 'img/muffin-grey.svg';
+
+const avatarChooser = offerForm.querySelector('.ad-form__field input[type="file"]');
+const avatarThumb = offerForm.querySelector('.ad-form-header__preview img');
+const housingPhotoChooser = offerForm.querySelector('.ad-form__upload input[type="file"]');
+const housingPhotoThumb = offerForm.querySelector('.ad-form__photo');
 
 
 const showThumbnail = (photoSource, photoDestination) => {
