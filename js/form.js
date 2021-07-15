@@ -50,8 +50,7 @@ const activateAdForm = (form, nodes) => {
 
 const setBorderColor = (checkNode) => {
   if (checkNode.validity.valid) {
-    if (checkNode.hasAttribute('style'))
-    {
+    if (checkNode.hasAttribute('style')) {
       checkNode.removeAttribute('style');
     }
   }
@@ -97,9 +96,8 @@ const getValuesFromSelect = (parentNode, id) => {
 const guests = getValuesFromSelect(offerForm, 'capacity').map((value) => Number(value));
 
 const setGuestCapacity = (selectedRooms) => {
-  const rooms = (selectedRooms) ? selectedRooms : event.currentTarget.value;
   const guestsAvailableIndex = [];
-  roomsForGuests[rooms].forEach((value) => {
+  roomsForGuests[selectedRooms].forEach((value) => {
     guestsAvailableIndex.push(guests[value]);
   });
 
@@ -119,12 +117,12 @@ const synchronizeCheckTime = (event, synchronizedNode) => {
   synchronizedNode.value = event.currentTarget.value;
 };
 
-const onInputTitle = () => verifyTitle(event);
-const onSelectInTime = () => synchronizeCheckTime(event, checkOutTime);
-const onSelectOutTime = () => synchronizeCheckTime(event, checkInTime);
+const onInputTitle = (event) => verifyTitle(event);
+const onSelectInTime = (event) => synchronizeCheckTime(event, checkOutTime);
+const onSelectOutTime = (event) => synchronizeCheckTime(event, checkInTime);
 const onSelectHousing = () => setCostValues();
-const onSelectRoomsNumber = () => setGuestCapacity();
-const onInputLivingPrice = () => colorizeInput(event);
+const onSelectRoomsNumber = () => setGuestCapacity(roomNumber.value);
+const onInputLivingPrice = (event) => colorizeInput(event);
 
 const setInitialFormData = () => {
   setCostValues();
