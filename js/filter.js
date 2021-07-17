@@ -30,14 +30,22 @@ const filterFeatures = filterForm.querySelectorAll('.map__checkbox');
 
 const deactivateFilters = (form, nodes, inputs) => {
   form.classList.add('map__filters--disabled');
-  nodes.forEach((node) => node.disabled = true);
-  inputs.forEach((node) => node.disabled = true);
+  nodes.forEach((node) => {
+    node.disabled = true;
+  });
+  inputs.forEach((node) => {
+    node.disabled = true;
+  });
 };
 
 const activateFilters = (form, nodes, inputs) => {
   form.classList.remove('map__filters--disabled');
-  nodes.forEach((node) => node.disabled = false);
-  inputs.forEach((node) => node.disabled = false);
+  nodes.forEach((node) => {
+    node.disabled = false;
+  });
+  inputs.forEach((node) => {
+    node.disabled = false;
+  });
 };
 
 const getSelectedHousingType = (ad) => (housingType.value === DEFAULT_PARAMETER) ? true : ad.offer.type === housingType.value;
