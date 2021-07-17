@@ -40,12 +40,16 @@ const requiredInputs = offerForm.querySelectorAll('input:required');
 
 const deactivateAdForm = (form, nodes) => {
   form.classList.add('ad-form--disabled');
-  nodes.forEach((node) => node.disabled = true);
+  nodes.forEach((node) => {
+    node.disabled = true;
+  });
 };
 
 const activateAdForm = (form, nodes) => {
   form.classList.remove('ad-form--disabled');
-  nodes.forEach((node) => node.disabled = false);
+  nodes.forEach((node) => {
+    node.disabled = false;
+  });
 };
 
 const setBorderColor = (checkNode) => {
